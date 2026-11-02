@@ -5,6 +5,30 @@ All notable changes to this repository. Dates are `YYYY-MM-DD`.
 This file is not translated: it is a historical record that grows with each version, and
 translating it would mean two histories that drift apart.
 
+## [1.0.1] — 2026-11-02
+
+**A gap in the recipe, found by following it on a game it was not written for.** Taking
+`n64hub/rush-2049-recomp` to the same console with these tools, everything applied — the same four
+conflicts, resolved by the same script — and then the appx refused to link:
+
+```text
+main.obj : error LNK2019: unresolved external symbol recompui_uwp_data_path
+```
+
+### Added
+
+- **`tools/parche_data_path.py`.** It defines `recompui_uwp_data_path` in RecompFrontend and makes
+  `get_app_folder_path` return it before looking at `portable.txt`. That change is **in none of
+  worleydl's patches** — it is this recipe's own, and until now it had travelled by copying
+  already-patched files rather than as a tool. Anyone starting from a clean checkout would have hit
+  the same wall at the very last step.
+- `tools/compilar.ps1` calls it at the end of the `parches` step, so the default path just works.
+
+### Changed
+
+- `docs/HOW-IT-WORKS.md` trap 9 and `docs/INSTALL.md`'s symptom table now name the error and the
+  tool that fixes it, in both languages. `tools/README.md` lists four tools instead of three.
+
 ## [1.0.0] — 2026-11-02
 
 First release. The recipe for taking **Mario Party: Recompiled** to an Xbox Series X in

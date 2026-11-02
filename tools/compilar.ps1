@@ -152,6 +152,12 @@ if (Hacer 'parches') {
         py -3.13 -X utf8 (Join-Path $here 'resolver_conflictos.py') $src
         if ($LASTEXITCODE -ne 0) { throw 'resolver_conflictos.py fallo' }
     }
+
+    # La carpeta de datos del contenedor. Va aparte de los parches de worleydl porque NO es suya:
+    # sin esto el appx no enlaza (LNK2019: recompui_uwp_data_path). Trampa 9 de HOW-IT-WORKS.
+    Write-Host '  la carpeta de datos (LocalFolder):'
+    py -3.13 -X utf8 (Join-Path $here 'parche_data_path.py') $src
+    if ($LASTEXITCODE -ne 0) { throw 'parche_data_path.py fallo' }
     else {
         Write-Host '  OJO: sin -ParchesUwp no se aplican los parches de plataforma.' -ForegroundColor Yellow
         Write-Host '       Estan en los repositorios de worleydl; ver docs\INSTALL.md.' -ForegroundColor Yellow
